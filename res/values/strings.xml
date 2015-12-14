@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">WatISpend</string>
+    <string name="student_number">Student Number</string>
+    <string name="watcard_pin">WATCard Pin</string>
+</resources>
