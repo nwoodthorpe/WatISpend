@@ -30,7 +30,7 @@ public class TransactionListAdapter extends ArrayAdapter<UniversalListInput> {
     public View getView(int position, View convertView, ViewGroup parent) {
         UniversalListInput user = users.get(position);
         boolean isDate = users.get(position).isDate;
-        View v = convertView;
+        View v = null;
         if (v == null) {
             LayoutInflater vi = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             int layout = 0;
