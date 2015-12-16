@@ -6,9 +6,16 @@
       />
   <PreferenceCategory
     android:title="Account" />
-  <Preference android:title="Term Dates"
-      android:key="termDatesButton"
-      android:summary=""/>
+    <nathaniel.watispend.DatePreference
+        android:key="dateBegin"
+        android:title="Term Date - Begin"
+        android:defaultValue="2015-06-01"
+        android:summary=""/>
+    <nathaniel.watispend.DatePreference
+        android:key="dateEnd"
+        android:title="Term Date - End"
+        android:defaultValue="2015-08-01"
+        android:summary=""/>
     <SwitchPreference android:title="Auto-Login"
         android:key="autoLoginSwitch"
         android:summary=""/>
@@ -16,12 +23,24 @@
         android:title="General" />
     <Preference android:title="Common Questions"
         android:key="commonQuestionsButton"
-        android:summary=""/>
+        android:summary=""
+        />
     <Preference android:title="Contact Us"
         android:key="contactUsButton"
-        android:summary=""/>
+        android:summary="">
+        <intent android:action="nathaniel.watispend.WebViewActivity">
+            <extra android:name="domain" android:value="http://watispend.com/#contact"/>
+            <extra android:name="title" android:value="Contact Us"/>
+        </intent>
+    </Preference>
     <Preference android:title="Privacy"
         android:key="privacyButton"
-        android:summary=""/>
+        android:summary="">
+        <intent android:action="nathaniel.watispend.WebViewActivity">
+            <extra android:name="domain" android:value="http://watispend.com/privacy.html"/>
+            <extra android:name="title" android:value="Privacy"/>
+        </intent>
+
+    </Preference>
 
 </PreferenceScreen>

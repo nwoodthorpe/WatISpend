@@ -2,11 +2,16 @@ package nathaniel.watispend;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageView;
+
+import java.text.SimpleDateFormat;
 
 /**
  * Created by Nathaniel on 12/15/2015.
@@ -26,6 +31,7 @@ public class PreferencesActivity extends PreferenceActivity{
         {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
+
         }
     }
 }
