@@ -1,10 +1,13 @@
 package nathaniel.watispend;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -13,11 +16,28 @@ import java.util.Date;
 
 public class TransactionsActivity extends AppCompatActivity {
 
+    private void onGraphClick(View v){
+        Intent loggedInIntent = new Intent(TransactionsActivity.this, GraphActivity.class);
+        TransactionsActivity.this.startActivity(loggedInIntent);
+    }
+
+    private void setButtonListeners(){
+        ImageView graphButton = (ImageView)findViewById(R.id.graphButton);
+        graphButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                onGraphClick(v);
+            }
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transactions);
         setTitle(Html.fromHtml("<font color='#000000'> Transactions </font>"));
+        setButtonListeners();
+
         Calendar cal = Calendar.getInstance();
         Date date = cal.getTime();
         ArrayList<UniversalListInput> mobileArray = new ArrayList<>();

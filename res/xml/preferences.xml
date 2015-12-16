@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+  <PreferenceCategory
+      android:title=""
+      android:layout="@layout/preferences_header"
+      />
+  <PreferenceCategory
+    android:title="Account" />
+  <Preference android:title="Term Dates"
+      android:key="termDatesButton"
+      android:summary=""/>
+    <SwitchPreference android:title="Auto-Login"
+        android:key="autoLoginSwitch"
+        android:summary=""/>
+    <PreferenceCategory
+        android:title="General" />
+    <Preference android:title="Common Questions"
+        android:key="commonQuestionsButton"
+        android:summary=""/>
+    <Preference android:title="Contact Us"
+        android:key="contactUsButton"
+        android:summary=""/>
+    <Preference android:title="Privacy"
+        android:key="privacyButton"
+        android:summary=""/>
+
+</PreferenceScreen>

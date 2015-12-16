@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="nathaniel.watispend.TransactionsActivity">
+    tools:context="nathaniel.watispend.GraphActivity">
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Transactions"
+        android:text="WatISpend"
         android:id="@+id/textView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -22,16 +22,6 @@
         android:typeface="normal"
         android:textStyle="bold" />
 
-    <ListView
-        android:id="@+id/list"
-        android:layout_marginTop="60dp"
-        android:minHeight="60dp"
-        android:maxHeight="100dp"
-        android:layout_height="fill_parent"
-        android:layout_width="match_parent"
-        >
-    </ListView>
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,11 +31,26 @@
         android:maxWidth="35dp"
         android:maxHeight="35dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/bargraph"
-        android:id="@+id/graphButton"
+        android:src="@drawable/settings"
+        android:id="@+id/settingsButton"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="28dp"
+        android:adjustViewBounds="true"
+        android:maxWidth="35dp"
+        android:maxHeight="35dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/transactions"
+        android:id="@+id/transactionsButton"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="false"
+        />
 </RelativeLayout>
