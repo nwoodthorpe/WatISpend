@@ -9,9 +9,11 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
+// Login Activity java file.
 public class LoginActivity extends AppCompatActivity {
 
+    //Android changes to a monospaced font when you use a password field.
+    //This fixes to keep fonts and styles consistant.
     private void fixPasswordFont(){
         EditText password = (EditText) findViewById(R.id.studentPIN);
         password.setTypeface(Typeface.DEFAULT);
@@ -24,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void onLoginClick(View view){
+        //Constants for credential restrictions
         final int STUDENT_NUM_LENGTH = 8;
         final int STUDENT_PIN_LOWER = 4;
         final int STUDENT_PIN_UPPER = 6;

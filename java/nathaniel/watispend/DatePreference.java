@@ -20,6 +20,7 @@ import android.widget.DatePicker;
 /**
  * Created by Nathaniel on 12/16/2015.
  */
+// Code based on Stack Overflow snippet, modified to suit my needs.
 public class DatePreference extends DialogPreference{
     private int lastDate = 0;
     private int lastMonth = 0;
@@ -85,7 +86,6 @@ public class DatePreference extends DialogPreference{
                     + String.valueOf(lastDate);
 
             if (callChangeListener(dateval)) {
-                System.out.println("Persisting...");
                 persistString(dateval);
             }
             setSummary(calendar);

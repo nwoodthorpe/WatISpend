@@ -8,13 +8,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-
+// Graph Activity java file.
 public class GraphActivity extends AppCompatActivity {
 
     private void onSettingsClick(View v){
         Intent settingsClickIntent = new Intent(GraphActivity.this, PreferencesActivity.class);
-        //settingsClickIntent.putExtra( PreferenceActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.GeneralPreferenceFragment.class.getName() );
-        //settingsClickIntent.putExtra( PreferenceActivity.EXTRA_NO_HEADERS, true );
         GraphActivity.this.startActivity(settingsClickIntent);
     }
 

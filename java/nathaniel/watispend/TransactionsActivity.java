@@ -13,7 +13,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
+// Transactions Activity java file.
 public class TransactionsActivity extends AppCompatActivity {
 
     private void onGraphClick(View v){
@@ -60,6 +60,7 @@ public class TransactionsActivity extends AppCompatActivity {
         mobileArray.add(new UniversalListInput(0.0, date, "Subway", "11:49 AM", -6.75, false));
         mobileArray.add(new UniversalListInput(0.0, date, "MathSoc", "12:38 PM", -0.75, false));
         mobileArray.add(new UniversalListInput(0.0, date, "V1 Caf", "4:59 PM", -4.44, false));
+        // Link the data and our listview using the adapter.
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);
     }

@@ -42,5 +42,7 @@
         </intent>
 
     </Preference>
+    <Preference android:key="studentNumEncrypted" />
+    <Preference android:key="studentPinEncrypted"/>
 
 </PreferenceScreen>

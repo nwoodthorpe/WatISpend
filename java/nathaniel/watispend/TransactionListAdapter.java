@@ -17,6 +17,7 @@ import java.util.ArrayList;
 /**
  * Created by Nathaniel on 12/13/2015.
  */
+// Adapter that links our data to the ListView on Transactions Activity
 public class TransactionListAdapter extends ArrayAdapter<UniversalListInput> {
     private ArrayList<UniversalListInput> users;
     final int dateLayoutXML = R.layout.listitem;
@@ -69,6 +70,7 @@ public class TransactionListAdapter extends ArrayAdapter<UniversalListInput> {
                     double userAmount = user.amount;
                     DecimalFormat df = new DecimalFormat("0.00");
                     String stringAmount = df.format(userAmount);
+                    // Change color depending on sign of amount.
                     if(userAmount > 0){
                         amount.setTextColor(Color.parseColor("#009933"));
                         amount.setText("+" + stringAmount);
