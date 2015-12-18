@@ -25,8 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="60dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,19 +35,167 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="When I run out of money in my account, can I add to my balance?"
-                android:id="@+id/textView2"
+                android:text="What do I do if I lose my WatCard?"
+                android:id="@+id/q1"
                 android:textStyle="bold"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hello"
-                android:id="@+id/q2Text"
-                android:textSize="20dp"
-                android:layout_below="@+id/textView2"
+                android:text="If you lose your WatCard, deactivate it immediately online or report it missing at any UW Food Services location, Graphics Copy Centre, or at the WatCard Office (ext. 32751). The Turnkey Desk (ext. 84434) can also deactivate your WatCard 24 hours a day, 7 days a week."
+                android:id="@+id/a1"
+                android:textSize="15dp"
                 android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="What if I forget my WatCard? Can I lend or borrow someone else’s WatCard?"
+                android:id="@+id/q2"
+                android:textStyle="bold"
+                android:textSize="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Due to special pricing and tax status for most students, your WatCard must be presented for every purchase. We recommend always carrying your WatCard. You cannot use someone else's WatCard to purchase items even if they say it is okay.
+
+WatCards can only be used by the person that they are issued to. If used by anyone else, for any reason, the WatCard may be taken away from the user. This policy is to ensure the personal security of each card holder."
+                android:id="@+id/a2"
+                android:textSize="15dp"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="When I run out of money in my account, can I add to my balance?"
+                android:id="@+id/q3"
+                android:textStyle="bold"
+                android:textSize="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You may add Flexible Dollars to your WatCard at any UW Food Services location, Graphics Copy Centre, the Turnkey Desk, and at the WatCard Office. UW Food Services locations accept a minimum deposit of $10.00 by cash or cheque, and the Turnkey Desk accepts this minimum deposit with cash only. For added convenience, both the Graphics Copy Centre’s and the WatCard Office also accept Visa, MasterCard, and Debit Card for deposits of $5.00 or greater. Any additional money added to your account will be Flexible Dollars and will not be Harmonized Sales Tax (HST) exempt."
+                android:id="@+id/a3"
+                android:textSize="15dp"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="How much should I add to the “Flexible Account”?"
+                android:id="@+id/q4"
+                android:textStyle="bold"
+                android:textSize="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="To determine what flexible balance is right for you, check out interactive flexible calculator which can help you to determine how much money you will need."
+                android:id="@+id/a4"
+                android:textSize="15dp"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="Can I purchase alcoholic beverages or tobacco products with my WatCard?"
+                android:id="@+id/q5"
+                android:textStyle="bold"
+                android:textSize="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No, the purchasing of these products is strictly prohibited at any location, both on and off campus."
+                android:id="@+id/a5"
+                android:textSize="15dp"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="What happens if I have money left on my WatCard at the end of term?"
+                android:id="@+id/q6"
+                android:textStyle="bold"
+                android:textSize="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Any money remaining on your WatCard will automatically carry forward each term for as long as you are a student at UW.
+
+Your meal plan discount only applies during the term in which you have purchased your meal plan. However, when you purchase a meal plan during a subsequent term, any meal plan money that has carried forward from a previous term will receive your current applicable discount. Any funds that carry forward (Residence Meal Plan Allowance (RMPA), Value Plus Meal Plan (VPMP), or Flexible Dollars) are not HST exempt.
+
+RMPA money transfers to your Transfer Meal Plan (MP) account to be spent at a UW Food Services eatery only and does not become Flexible Dollars. Any purchases you make at a UW Food Services location using Flexible Dollars or Transfer MP Dollars is not HST exempt."
+                android:id="@+id/a6"
+                android:textSize="15dp"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="If I have any money left over in my Residence (V1 and REV) Meal Plan account at the end of the term, does it become Flexible Dollars?"
+                android:id="@+id/q7"
+                android:textStyle="bold"
+                android:textSize="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="The balance remaining in your meal plan account at the end of a term does carry forward each term for as long as you are a student at UW. However, it transfers to the Transfer MP account to be spent at a UW Food Services eatery only and does not become Flexible Dollars.
+
+RMPA (Residence Meal Plan Allowance) money transfers to your Transfer MP account to be spent at a UW Food Services location only and does not become Flexible Dollars. Any purchases you make at a UW Food Services location using Flexible Dollars or Transfer MP Dollars is not HST exempt."
+                android:id="@+id/a7"
+                android:textSize="15dp"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="Are refunds on my WatCard account possible?"
+                android:id="@+id/q8"
+                android:textStyle="bold"
+                android:textSize="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="The only portion of your WatCard dollars that are refundable are your Flexible Dollars. Meal Plan dollars are neither refundable, nor can they be transferred to another account (e.g., Flexible Dollars), or to another WatCard.
+
+To obtain a Flexible Dollar refund, go to the WatCard Office and complete the appropriate paperwork. There is a $10.00 administrative fee. Refunds are processed by UW Financial Services once per term."
+                android:id="@+id/a8"
+                android:textSize="15dp"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="If I have more questions, who do I ask?"
+                android:id="@+id/q9"
+                android:textStyle="bold"
+                android:textSize="15dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="If you would like to know more about UW Food Services meal plans, you can call (519) 888-4567, extension 35270 or email foodservices@uwaterloo.ca.
+
+If you would like to know more about Flexible Dollars and the WatCard, call (519) 888-4567, extension 32751, email watcard@uwaterloo.ca, or visit the WatCard website."
+                android:id="@+id/a9"
+                android:textSize="15dp"
+                android:layout_marginTop="15dp"/>
+
         </LinearLayout>
 
     </ScrollView>
