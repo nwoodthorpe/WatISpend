@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="nathaniel.watispend">
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,11 +22,18 @@
         <activity android:name=".PreferencesActivity" />
         <activity android:name=".WebViewActivity">
             <intent-filter>
-                <action android:name="nathaniel.watispend.WebViewActivity"/>
+                <action android:name="nathaniel.watispend.WebViewActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".CommonQuestionsActivity">
+            <intent-filter>
+                <action android:name="nathaniel.watispend.CommonQuestionsActivity" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

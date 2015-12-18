@@ -34,6 +34,7 @@ public class PreferencesActivity extends PreferenceActivity{
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preferences);
+            hiddenPreferences();
         }
     }
 }

@@ -24,7 +24,9 @@
     <Preference android:title="Common Questions"
         android:key="commonQuestionsButton"
         android:summary=""
-        />
+        >
+        <intent android:action="nathaniel.watispend.CommonQuestionsActivity" />
+    </Preference>
     <Preference android:title="Contact Us"
         android:key="contactUsButton"
         android:summary="">

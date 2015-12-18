@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="nathaniel.watispend.CommonQuestionsActivity">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Common Questions"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:minHeight="60dp"
+        android:gravity="center"
+        android:textSize="25dp"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentEnd="false"
+        android:layout_centerHorizontal="true"
+        android:typeface="normal"
+        android:textStyle="bold" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="When I run out of money in my account, can I add to my balance?"
+                android:id="@+id/textView2"
+                android:textStyle="bold"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hello"
+                android:id="@+id/q2Text"
+                android:textSize="20dp"
+                android:layout_below="@+id/textView2"
+                android:layout_marginTop="15dp"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
