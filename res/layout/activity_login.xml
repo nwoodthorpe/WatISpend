@@ -28,7 +28,8 @@
         android:inputType="number"
         android:layout_below="@+id/imageView"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:text="12345678"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -38,7 +39,8 @@
         android:layout_marginTop="32dp"
         android:layout_below="@+id/studentNumber"
         android:layout_centerHorizontal="true"
-        android:inputType="numberPassword" />
+        android:inputType="numberPassword"
+        android:text="1234"/>
 
     <Button
         style="?android:attr/buttonStyleSmall"
