@@ -45,7 +45,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 // Login Activity java file.
@@ -119,16 +125,99 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void processData(String key, Object value) throws JSONException {
+    private void processData(String key, Object value) throws JSONException, ParseException {
+        UserValues vals = UserValues.getInstance();
+
         switch(key){
             case "password":
                 System.out.println("PASSWORD: " + (String)value);
+
                 break;
             case "user_info":
-                JSONObject x = new JSONObject((HashMap<String, String>) value);
+                JSONObject jsonObject = new JSONObject((HashMap<String, String>) value);
                 System.out.println("USERINFO");
-        }
-        //System.out.println(conv.values());
+                System.out.println(jsonObject.toString());
+                Iterator<?> keys = jsonObject.keys();
+
+                while( keys.hasNext() ) {
+                    String val = (String)keys.next();
+                    if ( jsonObject.get(val) instanceof JSONObject ) {
+                        JSONObject innerObject = (JSONObject)jsonObject.get(val);
+                        switch(val){
+                            case "time":
+                                Calendar cal = Calendar.getInstance();
+                                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+                                cal.setTime(format.parse((String) innerObject.get("term_start")));
+                                vals.termStart = cal;
+
+                                cal.setTime(format.parse((String) innerObject.get("term_finish")));
+                                vals.termEnd = cal;
+                                break;
+
+                            case "balances":
+                                vals.totalBalance = Double.parseDouble((String)innerObject.get("total"));
+                                System.out.println("total: " + vals.totalBalance);
+
+                                vals.mealPlan = Double.parseDouble((String) innerObject.get("mealplan"));
+                                System.out.println("mealplan: " + vals.mealPlan);
+
+                                vals.flex = Double.parseDouble((String) innerObject.get("flex"));
+                                System.out.println("flex: " + vals.flex);
+                                break;
+
+                            case "current":
+                                vals.currentWeekly = Double.parseDouble((String) innerObject.get("weekly"));
+                                System.out.println("Current Weekly: " + vals.currentWeekly);
+
+                                vals.currentDaily = Double.parseDouble((String) innerObject.get("daily"));
+                                System.out.println("Current Daily: " + vals.currentDaily);
+                                break;
+
+                            case "suggest":
+                                vals.suggestWeekly = Double.parseDouble((String) innerObject.get("weekly"));
+                                System.out.println("Suggest Weekly: " + vals.suggestWeekly);
+
+                                vals.suggestDaily = Double.parseDouble((String) innerObject.get("daily"));
+                                System.out.println("Suggest Daily: " + vals.suggestDaily);
+                        }
+                    }
+                }
+                break;
+            case "chart_data":
+                JSONObject chartJSON = new JSONObject((HashMap<String, String>) value);
+                JSONArray chartArray = (JSONArray) chartJSON.get("bar");
+                ArrayList<Double> chartData = new ArrayList<>();
+                for(int i = 0; i<chartArray.length(); i++){
+                    chartData.add(Double.parseDouble(chartArray.get(i).toString()));
+                }
+                vals.chartData = chartData;
+                break;
+
+            case "transactions":
+                JSONObject transJSON = new JSONObject((HashMap<String, String>) value);
+                System.out.println("TRANSACTIONS: " + transJSON.toString());
+
+                Iterator<?> transKeys = transJSON.keys();
+                while( transKeys.hasNext() ) {
+                    String val = (String) transKeys.next();
+                    if (transJSON.get(val) instanceof JSONArray) {
+                        ArrayList<Transaction> transactions = new ArrayList<>();
+                        JSONArray innerArray = (JSONArray) transJSON.get(val);
+                        for(int i = 0; i<innerArray.length(); i++){
+                            JSONObject innerObject = innerArray.getJSONObject(i);
+                            transactions.add(new Transaction(
+                                    (String) innerObject.get("location"),
+                                    (String) innerObject.get("time"),
+                                    Double.parseDouble(((String)innerObject.get("amount")).replaceAll(",", ""))));
+                        }
+                        Calendar cal = Calendar.getInstance();
+                        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd", Locale.US);
+                        cal.setTime(format.parse(val));
+                        vals.transactions.put(cal, transactions);
+                    }
+                }
+                break;
+        };
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +225,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         fixPasswordFont();
         setButtonListeners();
+        UserValues vals = UserValues.getInstance();
+        vals.transactions = new HashMap<Calendar, ArrayList<Transaction>>();
         Firebase.setAndroidContext(this);
     }
 
@@ -219,6 +310,8 @@ public class LoginActivity extends AppCompatActivity {
                                 try {
                                     processData(snapshot.getKey(), snapshot.getValue());
                                 } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
                             }
