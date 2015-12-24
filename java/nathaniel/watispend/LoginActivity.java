@@ -1,9 +1,13 @@
 package nathaniel.watispend;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
@@ -58,6 +62,9 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
     protected String numText;
     protected String pinText;
+    protected int loadCount = 0;
+    final int LOGINTIMEOUT = 10;//Time until login times out in seconds
+    final FinalInt timeoutCount = new FinalInt(LOGINTIMEOUT);
 
     //Android changes to a monospaced font when you use a password field.
     //This fixes to keep fonts and styles consistant.
@@ -98,7 +105,56 @@ public class LoginActivity extends AppCompatActivity {
             numText = studentNumberEdit.getText().toString();
             pinText = studentPinEdit.getText().toString();
             LoginTask task = new LoginTask();
+            loadCount = 0;
+            timeoutCount.val = LOGINTIMEOUT;
             task.execute();
+
+            final ProgressDialog progress = ProgressDialog.show(this, "Logging In...",
+                    "This shouldn't take long...", true);
+
+            final Handler handler = new Handler();
+
+            final Runnable r = new Runnable() {
+
+                public void run() {
+                    if(loadCount == 5) { //Data fully loaded
+                        System.out.println("DATA LOADED");
+                        progress.dismiss();
+                        Intent successfulLogin = new Intent(LoginActivity.this, TransactionsActivity.class);
+                        LoginActivity.this.startActivity(successfulLogin);
+                    }else if(timeoutCount.val <= -5){
+                        progress.dismiss();
+                        AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+                        alertDialog.setTitle("Login Error!");
+                        alertDialog.setMessage("Make sure your student number and pin are correct!");
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog.show();
+                    }else if(timeoutCount.val <= 0) {
+                       progress.dismiss();
+                        AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+                        alertDialog.setTitle("Network Timeout!");
+                        alertDialog.setMessage("Login took too long. Make sure you have an internet connection.");
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK.",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog.show();
+                    }else{
+                        System.out.println(timeoutCount.val);
+                        handler.postDelayed(this, 1000);
+                    }
+                    timeoutCount.val = timeoutCount.val - 1;
+                }
+            };
+
+            handler.postDelayed(r, 1000);
         }else{
             System.out.println("Nah");
         }
@@ -212,7 +268,8 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
                 break;
-        };
+        }
+        loadCount += 1;
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -270,7 +327,7 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
                 resp = "error 1";
             } catch (IOException e) {
-                e.printStackTrace();
+                timeoutCount.val = -5; //Set error to "LOGIN ERROR"
                 resp = "error 2";
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -282,69 +339,71 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            JSONObject l1 = null;
-            JSONObject l2 = null;
-            try {
-                l1 = new JSONObject(result);
-                l2 = (JSONObject) l1.get("result");
-                String token = (String) l2.get("token");
-                System.out.println(token);
+            if(timeoutCount.val > -5) {
+                JSONObject l1 = null;
+                JSONObject l2 = null;
+                try {
+                    l1 = new JSONObject(result);
+                    l2 = (JSONObject) l1.get("result");
+                    String token = (String) l2.get("token");
+                    System.out.println(token);
 
-                Firebase reference = new Firebase("https://watispend.firebaseio.com/students/");
+                    Firebase reference = new Firebase("https://watispend.firebaseio.com/students/");
 
-                Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
-                    @Override
-                    public void onAuthenticated(AuthData authData) {
-                        System.out.println("Testing Authenticated");
-                        Firebase reference = new Firebase("https://watispend.firebaseio.com/students/" + numText);
-                        Query queryRef = reference.orderByValue();
+                    Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
+                        @Override
+                        public void onAuthenticated(AuthData authData) {
+                            System.out.println("Testing Authenticated");
+                            Firebase reference = new Firebase("https://watispend.firebaseio.com/students/" + numText);
+                            Query queryRef = reference.orderByValue();
 
-                        queryRef.addChildEventListener(new ChildEventListener() {
-                            @Override
-                            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                                try {
-                                    processData(snapshot.getKey(), snapshot.getValue());
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
+                            queryRef.addChildEventListener(new ChildEventListener() {
+                                @Override
+                                public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+                                    try {
+                                        processData(snapshot.getKey(), snapshot.getValue());
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                                @Override
+                                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                            }
+                                }
 
-                            @Override
-                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                                @Override
+                                public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                            }
+                                }
 
-                            @Override
-                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                                @Override
+                                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                            }
+                                }
 
-                            @Override
-                            public void onCancelled(FirebaseError firebaseError) {
+                                @Override
+                                public void onCancelled(FirebaseError firebaseError) {
 
-                            }
-                            // ....
-                        });
-                    }
-                    @Override
-                    public void onAuthenticationError(FirebaseError firebaseError) {
-                        System.out.println("Testing failed");
-                    }
-                };
+                                }
+                                // ....
+                            });
+                        }
 
-                reference.authWithCustomToken(token, authResultHandler);
+                        @Override
+                        public void onAuthenticationError(FirebaseError firebaseError) {
+                            System.out.println("Testing failed");
+                        }
+                    };
 
-            } catch (JSONException e) {
-                e.printStackTrace();
+                    reference.authWithCustomToken(token, authResultHandler);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-
         }
 
         @Override
