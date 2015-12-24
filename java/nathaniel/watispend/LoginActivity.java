@@ -99,11 +99,6 @@ public class LoginActivity extends AppCompatActivity {
             pinText = studentPinEdit.getText().toString();
             LoginTask task = new LoginTask();
             task.execute();
-
-            /*
-            Intent loggedInIntent = new Intent(LoginActivity.this, TransactionsActivity.class);
-            LoginActivity.this.startActivity(loggedInIntent);
-            LoginActivity.this.finish();*/
         }else{
             System.out.println("Nah");
         }
@@ -267,8 +262,8 @@ public class LoginActivity extends AppCompatActivity {
             publishProgress("Connecting..."); // Calls onProgressUpdate()
             try {
                 JSONObject json = new JSONObject();
-                json.put("student_number", "20562549");
-                json.put("pin", "1234");
+                json.put("student_number", numText);
+                json.put("pin", pinText);
                 System.out.println(json.toString());
                 return makeRequest("https://watispend.herokuapp.com/waterloo/token", json);
             } catch (MalformedURLException e) {
@@ -301,7 +296,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onAuthenticated(AuthData authData) {
                         System.out.println("Testing Authenticated");
-                        Firebase reference = new Firebase("https://watispend.firebaseio.com/students/" + "20562549");
+                        Firebase reference = new Firebase("https://watispend.firebaseio.com/students/" + numText);
                         Query queryRef = reference.orderByValue();
 
                         queryRef.addChildEventListener(new ChildEventListener() {
@@ -345,6 +340,7 @@ public class LoginActivity extends AppCompatActivity {
                 };
 
                 reference.authWithCustomToken(token, authResultHandler);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }

@@ -53,4 +53,148 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="false"
         />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:background="@color/button_material_light"
+        android:id="@+id/horizLine"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="228dp"
+        android:height="15dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Meal Plan"
+        android:width="130dp"
+        android:gravity="center"
+        android:id="@+id/MealPlanStatic"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/MealPlan"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="230.78"
+        android:id="@+id/MealPlan"
+        android:textSize="22dp"
+        android:width="130dp"
+        android:gravity="center"
+        android:layout_marginTop="40dp"
+        android:layout_alignTop="@+id/horizLine"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Total Balance"
+        android:gravity="center"
+        android:id="@+id/TotalBalanceStatic"
+        android:layout_below="@+id/MealPlanStatic"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="234.59"
+        android:id="@+id/TotalBalance"
+        android:textSize="22dp"
+        android:width="130dp"
+        android:gravity="center"
+        android:layout_above="@+id/TotalBalanceStatic"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="26dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Flex Dollars"
+        android:width="130dp"
+        android:gravity="center"
+        android:id="@+id/FlexStatic"
+        android:layout_above="@+id/TotalBalanceStatic"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3.81"
+        android:id="@+id/Flex"
+        android:textSize="22dp"
+        android:width="130dp"
+        android:gravity="center"
+        android:layout_above="@+id/MealPlanStatic"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:height="2dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@color/button_material_light"
+        android:id="@+id/horizLine2"
+        android:layout_below="@+id/TotalBalanceStatic"
+        android:layout_marginTop="28dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Suggested Daily"
+        android:width="130dp"
+        android:gravity="center"
+        android:id="@+id/SuggestedDailyStatic"
+        android:layout_below="@+id/horizLine2"
+        android:layout_alignLeft="@+id/horizLine2"
+        android:layout_alignStart="@+id/horizLine2"
+        android:layout_marginTop="55dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="14.66"
+        android:id="@+id/SuggestedDaily"
+        android:textSize="22dp"
+        android:width="130dp"
+        android:gravity="center"
+        android:layout_below="@+id/horizLine2"
+        android:layout_alignLeft="@+id/horizLine2"
+        android:layout_alignStart="@+id/horizLine2"
+        android:layout_marginTop="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Current Daily"
+        android:width="130dp"
+        android:gravity="center"
+        android:id="@+id/CurrentDailyStatic"
+        android:layout_alignTop="@+id/SuggestedDailyStatic"
+        android:layout_alignRight="@+id/transactionsButton"
+        android:layout_alignEnd="@+id/transactionsButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="11.10"
+        android:id="@+id/textView3"
+        android:textSize="22dp"
+        android:width="130dp"
+        android:gravity="center"
+        android:layout_below="@+id/horizLine2"
+        android:layout_alignRight="@+id/horizLine2"
+        android:layout_alignEnd="@+id/horizLine2"
+        android:layout_marginTop="15dp" />
 </RelativeLayout>
