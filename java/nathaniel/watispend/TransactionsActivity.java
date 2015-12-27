@@ -10,12 +10,23 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
 // Transactions Activity java file.
 public class TransactionsActivity extends AppCompatActivity {
-
+    TreeMap<Calendar, ArrayList<Transaction>> transactions;
     private void onGraphClick(View v){
         Intent loggedInIntent = new Intent(TransactionsActivity.this, GraphActivity.class);
         TransactionsActivity.this.startActivity(loggedInIntent);
@@ -31,6 +42,37 @@ public class TransactionsActivity extends AppCompatActivity {
         });
     }
 
+    private ArrayList<UniversalListInput> fillListView(HashMap<Calendar, ArrayList<Transaction>> transactions) throws ParseException {
+        ArrayList<UniversalListInput> transactionsList = new ArrayList<>();
+        Map<Calendar, ArrayList<Transaction>> sortedMap = new TreeMap<Calendar, ArrayList<Transaction>>(Collections.<Calendar>reverseOrder());
+        sortedMap.putAll(transactions);
+        Set set = sortedMap.entrySet();
+        Iterator it = set.iterator();
+        while ( it.hasNext() ) {
+            Map.Entry entry = (Map.Entry) it.next();
+
+            Calendar key = (Calendar) entry.getKey();
+            Date keyDate = key.getTime();
+            double dailySum = 0;
+            ArrayList<Transaction> rawTransactions = (ArrayList<Transaction>) entry.getValue();
+            ArrayList<UniversalListInput> dailyTransactionsList = new ArrayList<>();
+            
+            for(int i = 0; i<rawTransactions.size(); i++){
+                Transaction current = rawTransactions.get(i);
+                dailySum += current.amount;
+                DateFormat originalFormat = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
+                DateFormat targetFormat = new SimpleDateFormat("hh:mm a");
+                dailyTransactionsList.add(new UniversalListInput(0.0, keyDate, current.location, targetFormat.format(originalFormat.parse(current.time)), current.amount, false));
+            }
+
+            transactionsList.add(new UniversalListInput(Math.abs(dailySum), keyDate, "", "", 0, true));
+            for(int i = 0; i<dailyTransactionsList.size(); i++){
+                transactionsList.add(dailyTransactionsList.get(i));
+            }
+        }
+        return transactionsList;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,28 +80,14 @@ public class TransactionsActivity extends AppCompatActivity {
         setTitle(Html.fromHtml("<font color='#000000'> Transactions </font>"));
         setButtonListeners();
 
-        Calendar cal = Calendar.getInstance();
-        Date date = cal.getTime();
-        ArrayList<UniversalListInput> mobileArray = new ArrayList<>();
-        mobileArray.add(new UniversalListInput(10.75, date, "", "", 0, true));
-        mobileArray.add(new UniversalListInput(0.0, date, "SLC Tim Hortons", "9:29 AM", -10.00, false));
-        mobileArray.add(new UniversalListInput(0.0, date, "MathSoc", "11:53 AM", -0.75, false));
-        cal.add(Calendar.DATE, -2);
-        date = cal.getTime();
-        mobileArray.add(new UniversalListInput(49.21, date, "", "", 0, true));
-        mobileArray.add(new UniversalListInput(0.0, date, "SCH Bookstore", "8:24 AM", -34.99, false));
-        mobileArray.add(new UniversalListInput(0.0, date, "Refill", "9:29 AM", 100, false));
-        mobileArray.add(new UniversalListInput(0.0, date, "Chopsticks", "12:38 PM", -9.80, false));
-        mobileArray.add(new UniversalListInput(0.0, date, "Burger King", "4:59 PM", -6.12, false));
-        mobileArray.add(new UniversalListInput(0.0, date, "MathSoc", "8:00 PM", -3.10, false));
-        cal.add(Calendar.DATE, -1);
-        date = cal.getTime();
-        mobileArray.add(new UniversalListInput(10.0, date, "", "", 0, true));
+        ArrayList<UniversalListInput> mobileArray = null;
+        try {
+            mobileArray = fillListView(UserValues.getInstance().transactions);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         ArrayAdapter adapter = new TransactionListAdapter(this, 0, mobileArray);
-        mobileArray.add(new UniversalListInput(0.0, date, "MathSoc", "9:00 AM", -0.75, false));
-        mobileArray.add(new UniversalListInput(0.0, date, "Subway", "11:49 AM", -6.75, false));
-        mobileArray.add(new UniversalListInput(0.0, date, "MathSoc", "12:38 PM", -0.75, false));
-        mobileArray.add(new UniversalListInput(0.0, date, "V1 Caf", "4:59 PM", -4.44, false));
         // Link the data and our listview using the adapter.
         ListView listView = (ListView) findViewById(R.id.list);
         listView.setAdapter(adapter);

@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
             task.execute();
 
             final ProgressDialog progress = ProgressDialog.show(this, "Logging In...",
-                    "This shouldn't take long...", true);
+                    "Please wait...", true);
 
             final Handler handler = new Handler();
 
