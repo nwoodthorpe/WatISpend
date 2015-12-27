@@ -1,6 +1,8 @@
 package nathaniel.watispend;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +12,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 // Graph Activity java file.
 public class GraphActivity extends AppCompatActivity {
@@ -59,11 +75,68 @@ public class GraphActivity extends AppCompatActivity {
         currentDaily.setText(df.format(vals.currentDaily));
     }
 
+    private void setupChart(){
+        BarChart chart = (BarChart) findViewById(R.id.chart);
+        chart.setBackgroundColor(Color.WHITE);
+        chart.setTouchEnabled(true);
+        chart.setDrawValueAboveBar(false);
+        chart.setDrawGridBackground(false);
+        chart.setDrawBarShadow(false);
+        chart.setDescription("");
+        chart.getAxisLeft().setDrawGridLines(false);
+        chart.getXAxis().setDrawGridLines(false);
+        chart.setDoubleTapToZoomEnabled(false);
+        chart.setPinchZoom(false);
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setTextColor(Color.BLACK);
+        xAxis.setDrawAxisLine(true);
+
+        YAxis yAxis = chart.getAxisLeft();
+        yAxis.setStartAtZero(true);
+        yAxis.setLabelCount(5, false);
+        yAxis.setTextColor(Color.BLACK);
+
+        YAxis right = chart.getAxisRight();
+        right.setEnabled(false);
+
+        Legend legend = chart.getLegend();
+        legend.setEnabled(false);
+
+        ArrayList<BarEntry> data = new ArrayList<>();
+        //ArrayList<Double> rawData = UserValues.getInstance().chartData;
+        ArrayList<Double> rawData = new ArrayList<>();
+        rawData.add(2.0);
+        rawData.add(5.8);
+        rawData.add(0.0);
+        rawData.add(10.0);
+        rawData.add(4.4);
+        rawData.add(2.2);
+        rawData.add(1.1);
+        ArrayList<String> xVals = new ArrayList<String>();
+        Calendar currentDate = Calendar.getInstance();
+        for(int i = 0; i<7; i++){
+            data.add(new BarEntry(rawData.get(i).floatValue(), i));
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEE");
+            xVals.add(dateFormat.format(currentDate.getTime()));
+            currentDate.add(Calendar.DATE, 1);
+        }
+        BarDataSet dataSet = new BarDataSet(data, "");
+        dataSet.setColor(Color.parseColor("#FCD450"));
+        dataSet.setDrawValues(false);
+
+        BarData barData = new BarData(xVals, dataSet);
+        chart.setData(barData);
+        chart.invalidate();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         setButtonListeners();
         setLabels();
+        setupChart();
     }
 }
