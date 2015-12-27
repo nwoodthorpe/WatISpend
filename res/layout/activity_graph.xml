@@ -189,7 +189,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="11.10"
-        android:id="@+id/textView3"
+        android:id="@+id/CurrentDaily"
         android:textSize="22dp"
         android:width="130dp"
         android:gravity="center"

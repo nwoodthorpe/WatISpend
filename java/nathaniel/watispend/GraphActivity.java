@@ -8,6 +8,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.text.DecimalFormat;
+
 // Graph Activity java file.
 public class GraphActivity extends AppCompatActivity {
 
@@ -39,10 +43,27 @@ public class GraphActivity extends AppCompatActivity {
         });
     }
 
+    private void setLabels(){
+        TextView mealPlan = (TextView) findViewById(R.id.MealPlan);
+        TextView totalBalance = (TextView) findViewById(R.id.TotalBalance);
+        TextView flex = (TextView) findViewById(R.id.Flex);
+        TextView suggestedDaily = (TextView) findViewById(R.id.SuggestedDaily);
+        TextView currentDaily = (TextView) findViewById(R.id.CurrentDaily);
+
+        UserValues vals = UserValues.getInstance();
+        DecimalFormat df = new DecimalFormat("0.00");
+        mealPlan.setText(df.format(vals.mealPlan));
+        totalBalance.setText(df.format(vals.totalBalance));
+        flex.setText(df.format(vals.flex));
+        suggestedDaily.setText(df.format(vals.suggestDaily));
+        currentDaily.setText(df.format(vals.currentDaily));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
         setButtonListeners();
+        setLabels();
     }
 }

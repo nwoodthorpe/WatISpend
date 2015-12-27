@@ -346,7 +346,7 @@ public class LoginActivity extends AppCompatActivity {
                     l1 = new JSONObject(result);
                     l2 = (JSONObject) l1.get("result");
                     String token = (String) l2.get("token");
-                    System.out.println(token);
+                    System.out.println("Token Recieved");
 
                     Firebase reference = new Firebase("https://watispend.firebaseio.com/students/");
 

@@ -56,7 +56,7 @@ public class TransactionsActivity extends AppCompatActivity {
             double dailySum = 0;
             ArrayList<Transaction> rawTransactions = (ArrayList<Transaction>) entry.getValue();
             ArrayList<UniversalListInput> dailyTransactionsList = new ArrayList<>();
-            
+
             for(int i = 0; i<rawTransactions.size(); i++){
                 Transaction current = rawTransactions.get(i);
                 dailySum += current.amount;
