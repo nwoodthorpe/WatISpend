@@ -58,6 +58,10 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
+import com.crashlytics.android.answers.Answers;
+import io.fabric.sdk.android.Fabric;
+import com.crashlytics.android.Crashlytics;
+
 // Login Activity java file.
 public class LoginActivity extends AppCompatActivity {
     protected String numText;
@@ -280,6 +284,8 @@ public class LoginActivity extends AppCompatActivity {
         UserValues vals = UserValues.getInstance();
         vals.transactions = new HashMap<Calendar, ArrayList<Transaction>>();
         Firebase.setAndroidContext(this);
+        Fabric.with(this, new Answers());
+        Fabric.with(this, new Crashlytics());
     }
 
     private class LoginTask extends AsyncTask<String, String, String> {

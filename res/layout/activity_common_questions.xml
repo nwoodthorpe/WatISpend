@@ -19,8 +19,7 @@
         android:background="@color/colorPrimary"
         android:layout_alignParentEnd="false"
         android:layout_centerHorizontal="true"
-        android:typeface="normal"
-        android:textStyle="bold" />
+        android:typeface="normal"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

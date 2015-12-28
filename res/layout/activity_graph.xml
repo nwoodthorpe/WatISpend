@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="WatISpend"
+        android:text="WATISpend"
         android:id="@+id/textView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -19,8 +19,7 @@
         android:background="@color/colorPrimary"
         android:layout_alignParentEnd="false"
         android:layout_centerHorizontal="true"
-        android:typeface="normal"
-        android:textStyle="bold" />
+        android:typeface="normal" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -63,13 +62,16 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="228dp"
-        android:height="15dp"/>
+        android:height="8dp"/>
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/chart"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_above="@id/horizLine"/>
 
     <TextView

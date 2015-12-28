@@ -32,7 +32,7 @@ import java.util.Date;
 public class GraphActivity extends AppCompatActivity {
 
     private void onSettingsClick(View v){
-        Intent settingsClickIntent = new Intent(GraphActivity.this, PreferencesActivity.class);
+        Intent settingsClickIntent = new Intent(GraphActivity.this, SettingsActivity.class);
         GraphActivity.this.startActivity(settingsClickIntent);
     }
 
@@ -105,15 +105,8 @@ public class GraphActivity extends AppCompatActivity {
         legend.setEnabled(false);
 
         ArrayList<BarEntry> data = new ArrayList<>();
-        //ArrayList<Double> rawData = UserValues.getInstance().chartData;
-        ArrayList<Double> rawData = new ArrayList<>();
-        rawData.add(2.0);
-        rawData.add(5.8);
-        rawData.add(0.0);
-        rawData.add(10.0);
-        rawData.add(4.4);
-        rawData.add(2.2);
-        rawData.add(1.1);
+        ArrayList<Double> rawData = UserValues.getInstance().chartData;
+
         ArrayList<String> xVals = new ArrayList<String>();
         Calendar currentDate = Calendar.getInstance();
         for(int i = 0; i<7; i++){
