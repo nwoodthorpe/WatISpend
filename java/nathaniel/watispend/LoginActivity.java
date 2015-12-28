@@ -5,9 +5,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
@@ -67,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
     protected String numText;
     protected String pinText;
     protected int loadCount = 0;
-    final int LOGINTIMEOUT = 10;//Time until login times out in seconds
+    final int LOGINTIMEOUT = 15;//Time until login times out in seconds
     final FinalInt timeoutCount = new FinalInt(LOGINTIMEOUT);
 
     //Android changes to a monospaced font when you use a password field.
@@ -123,9 +125,15 @@ public class LoginActivity extends AppCompatActivity {
                 public void run() {
                     if(loadCount == 5) { //Data fully loaded
                         System.out.println("DATA LOADED");
-                        progress.dismiss();
+                        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putInt("usernum", Integer.parseInt(numText));
+                        editor.putInt("pin", Integer.parseInt(pinText));
+                        editor.commit();
                         Intent successfulLogin = new Intent(LoginActivity.this, TransactionsActivity.class);
                         LoginActivity.this.startActivity(successfulLogin);
+                        progress.dismiss();
+                        LoginActivity.this.finish();
                     }else if(timeoutCount.val <= -5){
                         progress.dismiss();
                         AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
@@ -286,6 +294,22 @@ public class LoginActivity extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         Fabric.with(this, new Answers());
         Fabric.with(this, new Crashlytics());
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Boolean autologin = settings.getBoolean("autologin", false);
+        int autoNum = settings.getInt("usernum", 0);
+        int pin = settings.getInt("pin", 0);
+        if(autologin && (autoNum != 0) && (pin != 0)){
+            //Auto login
+            EditText studentNumberEdit = (EditText) findViewById(R.id.studentNumber);
+            EditText studentPinEdit = (EditText) findViewById(R.id.studentPIN);
+            studentNumberEdit.setText(String.format("%08d", autoNum));
+            System.out.println(studentNumberEdit.getText());
+            studentPinEdit.setText(String.format("%04d", pin));
+            System.out.println(studentPinEdit.getText());
+            Button loginButton = (Button) findViewById(R.id.loginButton);
+            loginButton.callOnClick();
+        }
+
     }
 
     private class LoginTask extends AsyncTask<String, String, String> {

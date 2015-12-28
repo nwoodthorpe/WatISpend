@@ -112,7 +112,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="13dp"
+            android:layout_marginTop="15dp"
             android:textSize="16dp"
             android:text="Term End"
             android:id="@+id/termEndText" />
@@ -136,7 +136,7 @@
             android:height="1dp"
             android:background="@color/dim_foreground_material_dark"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="15dp"
             android:text=""
             android:id="@+id/termEndHoriz" />
     </RelativeLayout>
@@ -152,7 +152,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="13dp"
+            android:layout_marginTop="15dp"
             android:textSize="16dp"
             android:text="Auto Login"
             android:id="@+id/autoLoginText" />
@@ -162,7 +162,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_marginRight="25dp"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:id="@+id/autoLoginSwitch"/>
 
         <TextView
             android:layout_width="fill_parent"
@@ -171,7 +172,7 @@
             android:height="1dp"
             android:background="@color/dim_foreground_material_dark"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="15dp"
             android:text=""
             android:id="@+id/autoLoginHoriz" />
     </RelativeLayout>
@@ -209,7 +210,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="13dp"
+            android:layout_marginTop="15dp"
             android:textSize="16dp"
             android:text="Common Questions"
             android:id="@+id/commonQuestionsText" />
@@ -233,7 +234,7 @@
             android:height="1dp"
             android:background="@color/dim_foreground_material_dark"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="15dp"
             android:text=""
             android:id="@+id/commonQuestionsHoriz" />
     </RelativeLayout>
@@ -249,7 +250,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="13dp"
+            android:layout_marginTop="15dp"
             android:textSize="16dp"
             android:text="Contact"
             android:id="@+id/contactText" />
@@ -273,7 +274,7 @@
             android:height="1dp"
             android:background="@color/dim_foreground_material_dark"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="15dp"
             android:text=""
             android:id="@+id/contactHoriz" />
     </RelativeLayout>
@@ -289,7 +290,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="13dp"
+            android:layout_marginTop="15dp"
             android:textSize="16dp"
             android:text="Privacy"
             android:id="@+id/privacyText" />
@@ -313,7 +314,7 @@
             android:height="1dp"
             android:background="@color/dim_foreground_material_dark"
             android:layout_marginLeft="25dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="15dp"
             android:text=""
             android:id="@+id/privacyHoriz" />
     </RelativeLayout>

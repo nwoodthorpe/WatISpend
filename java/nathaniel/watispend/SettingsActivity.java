@@ -1,11 +1,15 @@
 package nathaniel.watispend;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -90,6 +94,16 @@ public class SettingsActivity extends AppCompatActivity {
                 graphButtonClicked();
             }
         });
+        Switch autoLoginSwitch = (Switch) findViewById(R.id.autoLoginSwitch);
+        autoLoginSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean("autologin", isChecked);
+                editor.commit();
+            }
+        });
     }
 
     @Override
@@ -97,5 +111,8 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         setOnClickListeners();
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        Switch autoLoginSwitch = (Switch) findViewById(R.id.autoLoginSwitch);
+        autoLoginSwitch.setChecked(settings.getBoolean("autologin", false));
     }
 }
