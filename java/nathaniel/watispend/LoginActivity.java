@@ -208,13 +208,14 @@ public class LoginActivity extends AppCompatActivity {
                         JSONObject innerObject = (JSONObject)jsonObject.get(val);
                         switch(val){
                             case "time":
-                                Calendar cal = Calendar.getInstance();
+                                Calendar beginCal = Calendar.getInstance();
                                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
-                                cal.setTime(format.parse((String) innerObject.get("term_start")));
-                                vals.termStart = cal;
+                                beginCal.setTime(format.parse((String) innerObject.get("term_start")));
+                                vals.termStart = beginCal;
 
-                                cal.setTime(format.parse((String) innerObject.get("term_finish")));
-                                vals.termEnd = cal;
+                                Calendar endCal = Calendar.getInstance();
+                                endCal.setTime(format.parse((String) innerObject.get("term_finish")));
+                                vals.termEnd = endCal;
                                 break;
 
                             case "balances":
