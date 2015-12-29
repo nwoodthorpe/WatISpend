@@ -1,5 +1,6 @@
 package nathaniel.watispend;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -7,18 +8,64 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 
-public class SettingsActivity extends AppCompatActivity {
+import java.util.Calendar;
 
-    private void termBeginClicked(){
+public class SettingsActivity extends AppCompatActivity {
+    UserValues vals = UserValues.getInstance();
+
+    private void syncTermDates(){
 
     }
 
-    private void termEndClicked(){
+    private void termBeginClicked(){
+        final Calendar termBeginCalendar = Calendar.getInstance();
+        Calendar formerCalendar = vals.termStart;
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                termBeginCalendar.set(Calendar.YEAR, year);
+                termBeginCalendar.set(Calendar.MONTH, monthOfYear);
+                termBeginCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                vals.termStart = termBeginCalendar;
+                syncTermDates();
+            }
+        };
+
+        DatePickerDialog dialog = new DatePickerDialog(SettingsActivity.this, date, termBeginCalendar
+                .get(Calendar.YEAR), termBeginCalendar.get(Calendar.MONTH),
+                termBeginCalendar.get(Calendar.DAY_OF_MONTH));
+        dialog.updateDate(formerCalendar.get(Calendar.YEAR), formerCalendar.get(Calendar.MONTH), formerCalendar.get(Calendar.DAY_OF_MONTH));
+        dialog.show();
+    }
+
+    private void termEndClicked(){
+        final Calendar termEndCalendar = Calendar.getInstance();
+        Calendar formerCalendar = vals.termEnd;
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                termEndCalendar.set(Calendar.YEAR, year);
+                termEndCalendar.set(Calendar.MONTH, monthOfYear);
+                termEndCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                vals.termEnd = termEndCalendar;
+                syncTermDates();
+            }
+        };
+
+        DatePickerDialog dialog = new DatePickerDialog(SettingsActivity.this, date, termEndCalendar
+                .get(Calendar.YEAR), termEndCalendar.get(Calendar.MONTH),
+                termEndCalendar.get(Calendar.DAY_OF_MONTH));
+        dialog.updateDate(formerCalendar.get(Calendar.YEAR), formerCalendar.get(Calendar.MONTH), formerCalendar.get(Calendar.DAY_OF_MONTH));
+        dialog.show();
     }
 
     private void commonQuestionsClicked(){
@@ -54,7 +101,7 @@ public class SettingsActivity extends AppCompatActivity {
                 termBeginClicked();
             }
         });
-        RelativeLayout termEnd = (RelativeLayout) findViewById(R.id.termBeginLayout);
+        RelativeLayout termEnd = (RelativeLayout) findViewById(R.id.termEndLayout);
         termEnd.setOnClickListener(new View.OnClickListener(){
 
             @Override
