@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         EditText studentNum = (EditText) findViewById(R.id.studentNumber);
         studentNum.setTransformationMethod(new ClickableSpan());
         studentNum.setTypeface(Typeface.DEFAULT);
+
         password.setTypeface(Typeface.DEFAULT);
         password.setTransformationMethod(new PasswordTransformationMethod());
     }
@@ -124,8 +125,9 @@ public class LoginActivity extends AppCompatActivity {
             final Handler handler = new Handler();
 
             final Runnable r = new Runnable() {
-
+                boolean emptyFlag = false;
                 public void run() {
+                    System.out.println(loadCount);
                     if(loadCount == 5) { //Data fully loaded
                         System.out.println("DATA LOADED");
                         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -150,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                                 });
                         alertDialog.show();
                     }else if(timeoutCount.val <= 0) {
-                       progress.dismiss();
+                        progress.dismiss();
                         AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
                         alertDialog.setTitle("Network Timeout!");
                         alertDialog.setMessage("Login took too long. Make sure you have an internet connection.");
@@ -161,6 +163,20 @@ public class LoginActivity extends AppCompatActivity {
                                     }
                                 });
                         alertDialog.show();
+                    }else if(emptyFlag) {
+                        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putInt("usernum", Integer.parseInt(numText));
+                        editor.putInt("pin", Integer.parseInt(pinText));
+                        editor.commit();
+                        Intent successfulLogin = new Intent(LoginActivity.this, TransactionsActivity.class);
+                        LoginActivity.this.startActivity(successfulLogin);
+                        progress.dismiss();
+                        LoginActivity.this.finish();
+                    }else if(loadCount==4) {
+                        emptyFlag = true;
+                        System.out.println("SWITCHED");
+                        handler.postDelayed(this, 1000);
                     }else{
                         System.out.println(timeoutCount.val);
                         handler.postDelayed(this, 1000);
@@ -193,7 +209,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void processData(String key, Object value) throws JSONException, ParseException {
         UserValues vals = UserValues.getInstance();
-
+        System.out.println("TICK: " + key);
         switch(key){
             case "password":
                 System.out.println("PASSWORD: " + (String)value);

@@ -246,8 +246,8 @@ public class SettingsActivity extends AppCompatActivity {
                 int autoNum = settings.getInt("usernum", 0);
                 num = autoNum;
                 int pin = settings.getInt("pin", 0);
-                json.put("student_number", String.valueOf(autoNum));
-                json.put("pin", String.valueOf(pin));
+                json.put("student_number", String.format("%08d", num));
+                json.put("pin", String.format("%04d", pin));
                 System.out.println(json.toString());
                 return makeRequest("https://watispend.herokuapp.com/waterloo/token", json);
             } catch (MalformedURLException e) {
