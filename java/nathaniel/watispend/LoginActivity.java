@@ -76,6 +76,9 @@ public class LoginActivity extends AppCompatActivity {
     //This fixes to keep fonts and styles consistant.
     private void fixPasswordFont(){
         EditText password = (EditText) findViewById(R.id.studentPIN);
+        EditText studentNum = (EditText) findViewById(R.id.studentNumber);
+        studentNum.setTransformationMethod(new ClickableSpan());
+        studentNum.setTypeface(Typeface.DEFAULT);
         password.setTypeface(Typeface.DEFAULT);
         password.setTransformationMethod(new PasswordTransformationMethod());
     }

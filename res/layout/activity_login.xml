@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -25,7 +29,7 @@
         android:id="@+id/studentNumber"
         android:hint="@string/student_number"
         android:layout_marginTop="38dp"
-        android:inputType="number"
+        android:inputType="numberPassword"
         android:layout_below="@+id/imageView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -54,3 +58,4 @@
         android:layout_below="@+id/studentPIN"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
+</ScrollView>
