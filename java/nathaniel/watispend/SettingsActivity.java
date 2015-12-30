@@ -1,6 +1,7 @@
 package nathaniel.watispend;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -13,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.ChildEventListener;
@@ -59,6 +61,11 @@ public class SettingsActivity extends AppCompatActivity {
                 if (termBeginCalendar.before(vals.termEnd)) {
                     vals.termStart = termBeginCalendar;
                     syncTermDates();
+                    Context context = getApplicationContext();
+                    CharSequence text = "'Term Begin' set!";
+
+                    Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+                    toast.show();
                 }else{
                     System.out.println("ERROR: begin date must be before end date.");
                 }
@@ -84,6 +91,11 @@ public class SettingsActivity extends AppCompatActivity {
                 if(termEndCalendar.after(vals.termStart)){
                     vals.termEnd = termEndCalendar;
                     syncTermDates();
+                    Context context = getApplicationContext();
+                    CharSequence text = "'Term End' set!";
+
+                    Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+                    toast.show();
                 }else{
                    System.out.println("ERROR: term end date must be after term begin date.");
                 }
