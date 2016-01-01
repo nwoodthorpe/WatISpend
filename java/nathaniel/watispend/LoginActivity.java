@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
     protected String numText;
     protected String pinText;
     protected int loadCount = 0;
-    final int LOGINTIMEOUT = 15;//Time until login times out in seconds
+    final int LOGINTIMEOUT = 60;//Time until login times out in seconds
     final FinalInt timeoutCount = new FinalInt(LOGINTIMEOUT);
 
     //Android changes to a monospaced font when you use a password field.
@@ -126,6 +126,7 @@ public class LoginActivity extends AppCompatActivity {
 
             final Runnable r = new Runnable() {
                 boolean emptyFlag = false;
+                int count = 0;
                 public void run() {
                     System.out.println(loadCount);
                     if(loadCount == 5) { //Data fully loaded
@@ -174,8 +175,8 @@ public class LoginActivity extends AppCompatActivity {
                         progress.dismiss();
                         LoginActivity.this.finish();
                     }else if(loadCount==4) {
-                        emptyFlag = true;
-                        System.out.println("SWITCHED");
+                        count++;
+                        if(count > 4) emptyFlag = true;
                         handler.postDelayed(this, 1000);
                     }else{
                         System.out.println(timeoutCount.val);
@@ -372,11 +373,19 @@ public class LoginActivity extends AppCompatActivity {
                 json.put("student_number", numText);
                 json.put("pin", pinText);
                 System.out.println(json.toString());
+                makeRequest("https://watispend.herokuapp.com/waterloo/transactions", json);
+                makeRequest("https://watispend.herokuapp.com/waterloo/userinfo", json);
+                JSONObject chartJSON = new JSONObject();
+                chartJSON.put("student_number", numText);
+                chartJSON.put("pin", pinText);
+                chartJSON.put("chart_data", "bar");
+                makeRequest("https://watispend.herokuapp.com/waterloo/chart", chartJSON);
                 return makeRequest("https://watispend.herokuapp.com/waterloo/token", json);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
                 resp = "error 1";
             } catch (IOException e) {
+                e.printStackTrace();
                 timeoutCount.val = -5; //Set error to "LOGIN ERROR"
                 resp = "error 2";
             } catch (JSONException e) {
@@ -404,6 +413,8 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onAuthenticated(AuthData authData) {
                             System.out.println("Testing Authenticated");
+                            Firebase ref = new Firebase("https://watispend.firebaseio.com/students/" + numText + "/transactions");
+                            Query q = ref.orderByValue();
                             Firebase reference = new Firebase("https://watispend.firebaseio.com/students/" + numText);
                             Query queryRef = reference.orderByValue();
 
@@ -421,7 +432,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                                    System.out.println(dataSnapshot.getKey());
                                 }
 
                                 @Override
