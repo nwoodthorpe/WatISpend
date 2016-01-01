@@ -22,6 +22,16 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -125,6 +135,42 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onWindowFocusChanged(boolean hasFocus){
+        if(hasFocus && UserValues.getInstance().chartChange){
+            UserValues.getInstance().chartChange = false;
+            recreate();
+        }
+    }
+
+    public String makeRequest(String path, JSONObject params) throws Exception {
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        HttpPost httpost = new HttpPost(path);
+        JSONObject holder = params;
+        StringEntity se = new StringEntity(holder.toString());
+
+        System.out.println("SE:");
+        String inputLine ;
+        BufferedReader br = new BufferedReader(new InputStreamReader(se.getContent()));
+        try {
+            while ((inputLine = br.readLine()) != null) {
+                System.out.println(inputLine);
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        httpost.setEntity(se);
+        //sets a request header so the page receving the request
+        //will know what to do with it
+        httpost.setHeader("accept", "application/json");
+        httpost.setHeader("Content-Type", "application/json");
+
+        //Handles what is returned from the page
+        ResponseHandler responseHandler = new BasicResponseHandler();
+        return (String) httpclient.execute(httpost, responseHandler);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
@@ -132,4 +178,6 @@ public class GraphActivity extends AppCompatActivity {
         setLabels();
         setupChart();
     }
+
+
 }

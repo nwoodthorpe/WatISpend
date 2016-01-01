@@ -412,6 +412,7 @@ public class LoginActivity extends AppCompatActivity {
                     Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
                         @Override
                         public void onAuthenticated(AuthData authData) {
+                            UserValues.getInstance().chartChange = false;
                             System.out.println("Testing Authenticated");
                             Firebase ref = new Firebase("https://watispend.firebaseio.com/students/" + numText + "/transactions");
                             Query q = ref.orderByValue();
@@ -432,7 +433,14 @@ public class LoginActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                                    System.out.println(dataSnapshot.getKey());
+                                    UserValues.getInstance().chartChange = true;
+                                    try {
+                                        processData(dataSnapshot.getKey(), dataSnapshot.getValue());
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
 
                                 @Override

@@ -249,6 +249,9 @@ public class SettingsActivity extends AppCompatActivity {
                 json.put("student_number", String.format("%08d", num));
                 json.put("pin", String.format("%04d", pin));
                 System.out.println(json.toString());
+
+                makeRequest("https://watispend.herokuapp.com/waterloo/userinfo", json);
+
                 return makeRequest("https://watispend.herokuapp.com/waterloo/token", json);
             } catch (MalformedURLException e) {
                 e.printStackTrace();

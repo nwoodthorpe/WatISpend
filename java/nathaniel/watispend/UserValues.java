@@ -23,6 +23,7 @@ public class UserValues {
     public Calendar termEnd;
     public HashMap<Calendar, ArrayList<Transaction>> transactions;
     public ArrayList<Double> chartData;
+    public boolean chartChange;
 
     protected UserValues(){}
 
