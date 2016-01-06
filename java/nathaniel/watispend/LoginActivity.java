@@ -128,9 +128,7 @@ public class LoginActivity extends AppCompatActivity {
                 boolean emptyFlag = false;
                 int count = 0;
                 public void run() {
-                    System.out.println(loadCount);
                     if(loadCount == 5) { //Data fully loaded
-                        System.out.println("DATA LOADED");
                         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putInt("usernum", Integer.parseInt(numText));
@@ -179,7 +177,6 @@ public class LoginActivity extends AppCompatActivity {
                         if(count > 4) emptyFlag = true;
                         handler.postDelayed(this, 1000);
                     }else{
-                        System.out.println(timeoutCount.val);
                         handler.postDelayed(this, 1000);
                     }
                     timeoutCount.val = timeoutCount.val - 1;
@@ -187,8 +184,6 @@ public class LoginActivity extends AppCompatActivity {
             };
 
             handler.postDelayed(r, 1000);
-        }else{
-            System.out.println("Nah");
         }
     }
 
@@ -210,16 +205,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void processData(String key, Object value) throws JSONException, ParseException {
         UserValues vals = UserValues.getInstance();
-        System.out.println("TICK: " + key);
         switch(key){
             case "password":
-                System.out.println("PASSWORD: " + (String)value);
-
                 break;
             case "user_info":
                 JSONObject jsonObject = new JSONObject((HashMap<String, String>) value);
-                System.out.println("USERINFO");
-                System.out.println(jsonObject.toString());
                 Iterator<?> keys = jsonObject.keys();
 
                 while( keys.hasNext() ) {
@@ -240,29 +230,22 @@ public class LoginActivity extends AppCompatActivity {
 
                             case "balances":
                                 vals.totalBalance = Double.parseDouble((String)innerObject.get("total"));
-                                System.out.println("total: " + vals.totalBalance);
 
                                 vals.mealPlan = Double.parseDouble((String) innerObject.get("mealplan"));
-                                System.out.println("mealplan: " + vals.mealPlan);
 
                                 vals.flex = Double.parseDouble((String) innerObject.get("flex"));
-                                System.out.println("flex: " + vals.flex);
                                 break;
 
                             case "current":
                                 vals.currentWeekly = Double.parseDouble((String) innerObject.get("weekly"));
-                                System.out.println("Current Weekly: " + vals.currentWeekly);
 
                                 vals.currentDaily = Double.parseDouble((String) innerObject.get("daily"));
-                                System.out.println("Current Daily: " + vals.currentDaily);
                                 break;
 
                             case "suggest":
                                 vals.suggestWeekly = Double.parseDouble((String) innerObject.get("weekly"));
-                                System.out.println("Suggest Weekly: " + vals.suggestWeekly);
 
                                 vals.suggestDaily = Double.parseDouble((String) innerObject.get("daily"));
-                                System.out.println("Suggest Daily: " + vals.suggestDaily);
                         }
                     }
                 }
@@ -279,7 +262,6 @@ public class LoginActivity extends AppCompatActivity {
 
             case "transactions":
                 JSONObject transJSON = new JSONObject((HashMap<String, String>) value);
-                System.out.println("TRANSACTIONS: " + transJSON.toString());
 
                 Iterator<?> transKeys = transJSON.keys();
                 while( transKeys.hasNext() ) {
@@ -324,9 +306,7 @@ public class LoginActivity extends AppCompatActivity {
             EditText studentNumberEdit = (EditText) findViewById(R.id.studentNumber);
             EditText studentPinEdit = (EditText) findViewById(R.id.studentPIN);
             studentNumberEdit.setText(String.format("%08d", autoNum));
-            System.out.println(studentNumberEdit.getText());
             studentPinEdit.setText(String.format("%04d", pin));
-            System.out.println(studentPinEdit.getText());
             Button loginButton = (Button) findViewById(R.id.loginButton);
             loginButton.callOnClick();
         }
@@ -343,12 +323,11 @@ public class LoginActivity extends AppCompatActivity {
             JSONObject holder = params;
             StringEntity se = new StringEntity(holder.toString());
 
-            System.out.println("SE:");
             String inputLine ;
             BufferedReader br = new BufferedReader(new InputStreamReader(se.getContent()));
             try {
                 while ((inputLine = br.readLine()) != null) {
-                    System.out.println(inputLine);
+                    //System.out.println(inputLine);
                 }
                 br.close();
             } catch (IOException e) {
@@ -372,14 +351,15 @@ public class LoginActivity extends AppCompatActivity {
                 JSONObject json = new JSONObject();
                 json.put("student_number", numText);
                 json.put("pin", pinText);
-                System.out.println(json.toString());
-                makeRequest("https://watispend.herokuapp.com/waterloo/transactions", json);
-                makeRequest("https://watispend.herokuapp.com/waterloo/userinfo", json);
-                JSONObject chartJSON = new JSONObject();
-                chartJSON.put("student_number", numText);
-                chartJSON.put("pin", pinText);
-                chartJSON.put("chart_data", "bar");
-                makeRequest("https://watispend.herokuapp.com/waterloo/chart", chartJSON);
+                if(!numText.equals("99999999")) {
+                    makeRequest("https://watispend.herokuapp.com/waterloo/transactions", json);
+                    makeRequest("https://watispend.herokuapp.com/waterloo/userinfo", json);
+                    JSONObject chartJSON = new JSONObject();
+                    chartJSON.put("student_number", numText);
+                    chartJSON.put("pin", pinText);
+                    chartJSON.put("chart_data", "bar");
+                    makeRequest("https://watispend.herokuapp.com/waterloo/chart", chartJSON);
+                }
                 return makeRequest("https://watispend.herokuapp.com/waterloo/token", json);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -405,7 +385,6 @@ public class LoginActivity extends AppCompatActivity {
                     l1 = new JSONObject(result);
                     l2 = (JSONObject) l1.get("result");
                     String token = (String) l2.get("token");
-                    System.out.println("Token Recieved");
 
                     Firebase reference = new Firebase("https://watispend.firebaseio.com/students/");
 
@@ -413,7 +392,6 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onAuthenticated(AuthData authData) {
                             UserValues.getInstance().chartChange = false;
-                            System.out.println("Testing Authenticated");
                             Firebase ref = new Firebase("https://watispend.firebaseio.com/students/" + numText + "/transactions");
                             Query q = ref.orderByValue();
                             Firebase reference = new Firebase("https://watispend.firebaseio.com/students/" + numText);

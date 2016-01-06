@@ -1,6 +1,7 @@
 package nathaniel.watispend;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.preference.Preference;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -139,6 +141,12 @@ public class GraphActivity extends AppCompatActivity {
         if(hasFocus && UserValues.getInstance().chartChange){
             UserValues.getInstance().chartChange = false;
             recreate();
+
+            Context context = getApplicationContext();
+            CharSequence text = "'Suggested' Values Updated!";
+
+            Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 
@@ -148,12 +156,11 @@ public class GraphActivity extends AppCompatActivity {
         JSONObject holder = params;
         StringEntity se = new StringEntity(holder.toString());
 
-        System.out.println("SE:");
         String inputLine ;
         BufferedReader br = new BufferedReader(new InputStreamReader(se.getContent()));
         try {
             while ((inputLine = br.readLine()) != null) {
-                System.out.println(inputLine);
+                //System.out.println(inputLine);
             }
             br.close();
         } catch (IOException e) {

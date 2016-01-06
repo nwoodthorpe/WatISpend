@@ -67,7 +67,10 @@ public class SettingsActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
                     toast.show();
                 }else{
-                    System.out.println("ERROR: begin date must be before end date.");
+                    CharSequence text = "'Term Begin' must be before 'Term End'!";
+
+                    Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             }
         };
@@ -97,7 +100,10 @@ public class SettingsActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
                     toast.show();
                 }else{
-                   System.out.println("ERROR: term end date must be after term begin date.");
+                    CharSequence text = "'Term Begin' must be before 'Term End'!";
+
+                    Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+                    toast.show();
                 }
             }
         };
@@ -215,12 +221,11 @@ public class SettingsActivity extends AppCompatActivity {
             JSONObject holder = params;
             StringEntity se = new StringEntity(holder.toString());
 
-            System.out.println("SE:");
             String inputLine ;
             BufferedReader br = new BufferedReader(new InputStreamReader(se.getContent()));
             try {
                 while ((inputLine = br.readLine()) != null) {
-                    System.out.println(inputLine);
+                    //System.out.println(inputLine);
                 }
                 br.close();
             } catch (IOException e) {
@@ -248,7 +253,6 @@ public class SettingsActivity extends AppCompatActivity {
                 int pin = settings.getInt("pin", 0);
                 json.put("student_number", String.format("%08d", num));
                 json.put("pin", String.format("%04d", pin));
-                System.out.println(json.toString());
 
                 makeRequest("https://watispend.herokuapp.com/waterloo/userinfo", json);
 
@@ -275,13 +279,11 @@ public class SettingsActivity extends AppCompatActivity {
                 l1 = new JSONObject(result);
                 l2 = (JSONObject) l1.get("result");
                 String token = (String) l2.get("token");
-                System.out.println("Token Recieved");
                 Firebase reference = new Firebase("https://watispend.firebaseio.com/students/");
 
                 Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
-                        System.out.println("Testing Authenticated");
                         Firebase reference = new Firebase("https://watispend.firebaseio.com/students/" + num);
                         Firebase termBeginReference = reference.child("user_info").child("time").child("term_start");
                         Firebase termEndReference = reference.child("user_info").child("time").child("term_finish");
@@ -290,8 +292,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                         String termBeginString = termBegin.get(Calendar.DAY_OF_MONTH) + "/" + (termBegin.get(Calendar.MONTH) + 1) + "/" + termBegin.get(Calendar.YEAR);
                         String termEndString = termEnd.get(Calendar.DAY_OF_MONTH) + "/" + (termEnd.get(Calendar.MONTH) + 1) + "/" + termEnd.get(Calendar.YEAR);
-                        System.out.println(termBeginString);
-                        System.out.println(termEndString);
+
                         termBeginReference.setValue(termBeginString);
                         termEndReference.setValue(termEndString);
 
