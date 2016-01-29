@@ -134,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putInt("usernum", Integer.parseInt(numText));
                         editor.putInt("pin", Integer.parseInt(pinText));
                         editor.commit();
-                        Intent successfulLogin = new Intent(LoginActivity.this, TransactionsActivity.class);
+                        Intent successfulLogin = new Intent(LoginActivity.this, GraphActivity.class);
                         LoginActivity.this.startActivity(successfulLogin);
                         progress.dismiss();
                         LoginActivity.this.finish();
