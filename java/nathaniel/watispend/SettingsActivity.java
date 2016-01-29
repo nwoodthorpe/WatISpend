@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -139,6 +140,13 @@ public class SettingsActivity extends AppCompatActivity {
         SettingsActivity.this.startActivity(intent);
     }
 
+    private void addFundsClicked(){
+        String url = "https://account.watcard.uwaterloo.ca/addfunds.asp";
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        SettingsActivity.this.startActivity(intent);
+    }
+
     private void setOnClickListeners(){
         RelativeLayout termBegin = (RelativeLayout) findViewById(R.id.termBeginLayout);
         termBegin.setOnClickListener(new View.OnClickListener(){
@@ -181,7 +189,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
         ImageView graphButton = (ImageView) findViewById(R.id.graphButton);
-        graphButton.setOnClickListener(new View.OnClickListener(){
+        graphButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -196,6 +204,14 @@ public class SettingsActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putBoolean("autologin", isChecked);
                 editor.commit();
+            }
+        });
+        RelativeLayout addFunds = (RelativeLayout) findViewById(R.id.addFundsLayout);
+        addFunds.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                addFundsClicked();
             }
         });
     }

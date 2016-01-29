@@ -245,8 +245,48 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="horizontal" android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/contactLayout"
+        android:id="@+id/addFundsLayout"
         android:layout_below="@+id/commonQuestionsLayout"
+        android:clickable="true">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="15dp"
+            android:textSize="16dp"
+            android:text="Add Funds"
+            android:id="@+id/addFundsText" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="25dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/left"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:maxHeight="30dp"
+            android:maxWidth="30dp"/>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/addFundsText"
+            android:height="1dp"
+            android:background="@color/dim_foreground_material_dark"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="15dp"
+            android:text=""
+            android:id="@+id/addFundsHoriz" />
+    </RelativeLayout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/contactLayout"
+        android:layout_below="@+id/addFundsLayout"
         android:clickable="true">
 
 
