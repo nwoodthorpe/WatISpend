@@ -147,6 +147,30 @@ public class SettingsActivity extends AppCompatActivity {
         SettingsActivity.this.startActivity(intent);
     }
 
+    private void logoutClicked(){
+        UserValues vals = UserValues.getInstance();
+        vals.chartChange = false;
+        vals.chartData = null;
+        vals.currentDaily = 0;
+        vals.currentWeekly = 0;
+        vals.encryptedPin = 0;
+        vals.encryptedStudentNum = 0;
+        vals.flex = 0;
+        vals.mealPlan = 0;
+        vals.suggestDaily = 0;
+        vals.suggestWeekly = 0;
+        vals.totalBalance = 0;
+        vals.transactions = null;
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("autologin", false);
+        editor.commit();
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
     private void setOnClickListeners(){
         RelativeLayout termBegin = (RelativeLayout) findViewById(R.id.termBeginLayout);
         termBegin.setOnClickListener(new View.OnClickListener(){
@@ -197,9 +221,9 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
         Switch autoLoginSwitch = (Switch) findViewById(R.id.autoLoginSwitch);
-        autoLoginSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+        autoLoginSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putBoolean("autologin", isChecked);
@@ -207,11 +231,19 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
         RelativeLayout addFunds = (RelativeLayout) findViewById(R.id.addFundsLayout);
-        addFunds.setOnClickListener(new View.OnClickListener(){
+        addFunds.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 addFundsClicked();
+            }
+        });
+        RelativeLayout logout = (RelativeLayout) findViewById(R.id.logoutLayout);
+        logout.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                logoutClicked();
             }
         });
     }
@@ -225,7 +257,8 @@ public class SettingsActivity extends AppCompatActivity {
         Switch autoLoginSwitch = (Switch) findViewById(R.id.autoLoginSwitch);
         autoLoginSwitch.setChecked(settings.getBoolean("autologin", false));
     }
-
+    //When the user changes the term date, we record this change on the server so that when they
+    //Login on other devices or a different platform, their settings are retained.
     private class UploadTermDate extends AsyncTask<String, String, String> {
         private String resp;
         private boolean error;

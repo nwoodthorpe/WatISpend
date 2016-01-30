@@ -8,6 +8,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.listener.ChartTouchListener;
 
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
@@ -43,11 +45,13 @@ import java.util.Date;
 // Graph Activity java file.
 public class GraphActivity extends AppCompatActivity {
 
+    //Open settings menu on button click
     private void onSettingsClick(View v){
         Intent settingsClickIntent = new Intent(GraphActivity.this, SettingsActivity.class);
         GraphActivity.this.startActivity(settingsClickIntent);
     }
 
+    //Open transactions menu on button click
     private void onTransactionsClick(View v){
         Intent transactionsClickIntent = new Intent(GraphActivity.this, TransactionsActivity.class);
         GraphActivity.this.startActivity(transactionsClickIntent);
@@ -63,7 +67,7 @@ public class GraphActivity extends AppCompatActivity {
         });
 
         ImageView transactionsButton = (ImageView)findViewById(R.id.transactionsButton);
-        transactionsButton.setOnClickListener(new View.OnClickListener(){
+        transactionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onTransactionsClick(v);
@@ -71,6 +75,7 @@ public class GraphActivity extends AppCompatActivity {
         });
     }
 
+    //Dynamically assigns all label values according to input from DB
     private void setLabels(){
         TextView mealPlan = (TextView) findViewById(R.id.MealPlan);
         TextView totalBalance = (TextView) findViewById(R.id.TotalBalance);
@@ -87,11 +92,12 @@ public class GraphActivity extends AppCompatActivity {
         currentDaily.setText(df.format(vals.currentDaily));
     }
 
+    //Initiates chart
     private void setupChart(){
-        BarChart chart = (BarChart) findViewById(R.id.chart);
+        final BarChart chart = (BarChart) findViewById(R.id.chart);
         chart.setBackgroundColor(Color.WHITE);
         chart.setTouchEnabled(true);
-        chart.setDrawValueAboveBar(false);
+        chart.setDrawValueAboveBar(true);
         chart.setDrawGridBackground(false);
         chart.setDrawBarShadow(false);
         chart.setDescription("");
@@ -99,6 +105,8 @@ public class GraphActivity extends AppCompatActivity {
         chart.getXAxis().setDrawGridLines(false);
         chart.setDoubleTapToZoomEnabled(false);
         chart.setPinchZoom(false);
+
+
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -119,6 +127,8 @@ public class GraphActivity extends AppCompatActivity {
         ArrayList<BarEntry> data = new ArrayList<>();
         ArrayList<Double> rawData = UserValues.getInstance().chartData;
 
+        //Dynamically builds a list of days of the week from today to 6 days ago.
+        //E.g. {Wednesday, Thursday, Friday, Saturday, Sunday, Monday, Tuesday}
         ArrayList<String> xVals = new ArrayList<String>();
         Calendar currentDate = Calendar.getInstance();
         for(int i = 0; i<7; i++){
@@ -127,17 +137,33 @@ public class GraphActivity extends AppCompatActivity {
             xVals.add(dateFormat.format(currentDate.getTime()));
             currentDate.add(Calendar.DATE, 1);
         }
-        BarDataSet dataSet = new BarDataSet(data, "");
+        final BarDataSet dataSet = new BarDataSet(data, "");
         dataSet.setColor(Color.parseColor("#FCD450"));
         dataSet.setDrawValues(false);
+        dataSet.setValueTextSize(12f);
+
+        chart.setOnTouchListener(new ChartTouchListener(chart) {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int action = event.getAction();
+                if (action == MotionEvent.ACTION_DOWN) {
+                    dataSet.setDrawValues(!dataSet.isDrawValuesEnabled());
+                    chart.invalidate();
+                }
+                return true;
+
+            }
+        });
 
         BarData barData = new BarData(xVals, dataSet);
         chart.setData(barData);
-        chart.invalidate();
+        chart.invalidate(); // Invalidate to force redraw
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus){
+        // If there's been a change in chart data based, refresh and show butter toast
         if(hasFocus && UserValues.getInstance().chartChange){
             UserValues.getInstance().chartChange = false;
             recreate();
@@ -159,9 +185,9 @@ public class GraphActivity extends AppCompatActivity {
         String inputLine ;
         BufferedReader br = new BufferedReader(new InputStreamReader(se.getContent()));
         try {
-            while ((inputLine = br.readLine()) != null) {
-                //System.out.println(inputLine);
-            }
+            /*while ((inputLine = br.readLine()) != null) {
+                System.out.println(inputLine);
+            }*/
             br.close();
         } catch (IOException e) {
             e.printStackTrace();

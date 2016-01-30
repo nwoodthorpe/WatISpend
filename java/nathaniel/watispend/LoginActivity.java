@@ -13,7 +13,9 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -68,12 +70,12 @@ import com.crashlytics.android.Crashlytics;
 public class LoginActivity extends AppCompatActivity {
     protected String numText;
     protected String pinText;
-    protected int loadCount = 0;
+    protected int loadCount = 0; //Number of packages loaded from the database.
     final int LOGINTIMEOUT = 60;//Time until login times out in seconds
     final FinalInt timeoutCount = new FinalInt(LOGINTIMEOUT);
 
     //Android changes to a monospaced font when you use a password field.
-    //This fixes to keep fonts and styles consistant.
+    //This fixes to keep fonts and styles consistent.
     private void fixPasswordFont(){
         EditText password = (EditText) findViewById(R.id.studentPIN);
         EditText studentNum = (EditText) findViewById(R.id.studentNumber);
@@ -94,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
         final int STUDENT_NUM_LENGTH = 8;
         final int STUDENT_PIN_LOWER = 4;
         final int STUDENT_PIN_UPPER = 6;
-        boolean errorFlag = false;
+        boolean errorFlag = false; //Toggle flag on error
 
         EditText studentNumberEdit = (EditText) findViewById(R.id.studentNumber);
         EditText studentPinEdit = (EditText) findViewById(R.id.studentPIN);
@@ -117,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
             LoginTask task = new LoginTask();
             loadCount = 0;
             timeoutCount.val = LOGINTIMEOUT;
-            task.execute();
+            task.execute(); //Initiate login attempt
 
             final ProgressDialog progress = ProgressDialog.show(this, "Logging In...",
                     "Please wait...", true);
@@ -180,6 +182,8 @@ public class LoginActivity extends AppCompatActivity {
                         handler.postDelayed(this, 1000);
                     }
                     timeoutCount.val = timeoutCount.val - 1;
+                    if(timeoutCount.val < 50)
+                        progress.setMessage("Almost done...");
                 }
             };
 
@@ -188,7 +192,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setButtonListeners(){
-        Button loginButton = (Button)findViewById(R.id.loginButton);
+        final Button loginButton = (Button)findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -201,17 +205,28 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
+        EditText studentPinEdit = (EditText) findViewById(R.id.studentPIN);
+        studentPinEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    loginButton.callOnClick();
+                }
+                return false;
+            }
+        });
     }
 
     private void processData(String key, Object value) throws JSONException, ParseException {
-        UserValues vals = UserValues.getInstance();
+        UserValues userGlobals = UserValues.getInstance();
         switch(key){
             case "password":
-                break;
+                break; //The response includes the password which is of no use to us.
             case "user_info":
                 JSONObject jsonObject = new JSONObject((HashMap<String, String>) value);
                 Iterator<?> keys = jsonObject.keys();
 
+                //Iterate over user info keys
                 while( keys.hasNext() ) {
                     String val = (String)keys.next();
                     if ( jsonObject.get(val) instanceof JSONObject ) {
@@ -221,31 +236,31 @@ public class LoginActivity extends AppCompatActivity {
                                 Calendar beginCal = Calendar.getInstance();
                                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
                                 beginCal.setTime(format.parse((String) innerObject.get("term_start")));
-                                vals.termStart = beginCal;
+                                userGlobals.termStart = beginCal;
 
                                 Calendar endCal = Calendar.getInstance();
                                 endCal.setTime(format.parse((String) innerObject.get("term_finish")));
-                                vals.termEnd = endCal;
+                                userGlobals.termEnd = endCal;
                                 break;
 
                             case "balances":
-                                vals.totalBalance = Double.parseDouble((String)innerObject.get("total"));
+                                userGlobals.totalBalance = Double.parseDouble((String)innerObject.get("total"));
 
-                                vals.mealPlan = Double.parseDouble((String) innerObject.get("mealplan"));
+                                userGlobals.mealPlan = Double.parseDouble((String) innerObject.get("mealplan"));
 
-                                vals.flex = Double.parseDouble((String) innerObject.get("flex"));
+                                userGlobals.flex = Double.parseDouble((String) innerObject.get("flex"));
                                 break;
 
                             case "current":
-                                vals.currentWeekly = Double.parseDouble((String) innerObject.get("weekly"));
+                                userGlobals.currentWeekly = Double.parseDouble((String) innerObject.get("weekly"));
 
-                                vals.currentDaily = Double.parseDouble((String) innerObject.get("daily"));
+                                userGlobals.currentDaily = Double.parseDouble((String) innerObject.get("daily"));
                                 break;
 
                             case "suggest":
-                                vals.suggestWeekly = Double.parseDouble((String) innerObject.get("weekly"));
+                                userGlobals.suggestWeekly = Double.parseDouble((String) innerObject.get("weekly"));
 
-                                vals.suggestDaily = Double.parseDouble((String) innerObject.get("daily"));
+                                userGlobals.suggestDaily = Double.parseDouble((String) innerObject.get("daily"));
                         }
                     }
                 }
@@ -257,7 +272,7 @@ public class LoginActivity extends AppCompatActivity {
                 for(int i = 0; i<chartArray.length(); i++){
                     chartData.add(Double.parseDouble(chartArray.get(i).toString()));
                 }
-                vals.chartData = chartData;
+                userGlobals.chartData = chartData;
                 break;
 
             case "transactions":
@@ -279,7 +294,7 @@ public class LoginActivity extends AppCompatActivity {
                         Calendar cal = Calendar.getInstance();
                         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd", Locale.US);
                         cal.setTime(format.parse(val));
-                        vals.transactions.put(cal, transactions);
+                        userGlobals.transactions.put(cal, transactions);
                     }
                 }
                 break;
@@ -295,10 +310,13 @@ public class LoginActivity extends AppCompatActivity {
         UserValues vals = UserValues.getInstance();
         vals.transactions = new HashMap<Calendar, ArrayList<Transaction>>();
         Firebase.setAndroidContext(this);
+
+        //CRASHLYTICS (ANALYTICS) CODE
         Fabric.with(this, new Answers());
         Fabric.with(this, new Crashlytics());
+
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        Boolean autologin = settings.getBoolean("autologin", false);
+        Boolean autologin = settings.getBoolean("autologin", false); //Enable autologin, or set false if not set
         int autoNum = settings.getInt("usernum", 0);
         int pin = settings.getInt("pin", 0);
         if(autologin && (autoNum != 0) && (pin != 0)){
@@ -351,7 +369,7 @@ public class LoginActivity extends AppCompatActivity {
                 JSONObject json = new JSONObject();
                 json.put("student_number", numText);
                 json.put("pin", pinText);
-                if(!numText.equals("99999999")) {
+                if(!numText.equals("99999999")) { //We handle the testing ID seperately
                     makeRequest("https://watispend.herokuapp.com/waterloo/transactions", json);
                     makeRequest("https://watispend.herokuapp.com/waterloo/userinfo", json);
                     JSONObject chartJSON = new JSONObject();
@@ -378,6 +396,7 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
+            //We've successfully connected, now we need to ask for the data
             if(timeoutCount.val > -5) {
                 JSONObject l1 = null;
                 JSONObject l2 = null;
@@ -435,13 +454,12 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onCancelled(FirebaseError firebaseError) {
 
                                 }
-                                // ....
                             });
                         }
 
                         @Override
                         public void onAuthenticationError(FirebaseError firebaseError) {
-                            System.out.println("Testing failed");
+                            System.out.println("Authentication failed");
                         }
                     };
 
